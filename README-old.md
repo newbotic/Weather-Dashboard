@@ -14,11 +14,8 @@ You will use `localStorage` to store any persistent data. For more information o
 
 ## User Story
 
-```text
-AS A traveler
-I WANT to see the weather outlook for multiple cities
-SO THAT I can plan a trip accordingly
-```
+As an individual who frequently travels, my goal is to access weather forecasts for various cities. This feature is essential for effective trip planning, enabling me to make informed decisions based on the weather outlook in each destination.
+
 
 ## Acceptance Criteria
 

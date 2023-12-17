@@ -10,10 +10,6 @@ $(document).ready(function () {
   });
 
 
-
-
-
-
   function getDataFromApi(cityName) {
 
     $("#forecast").empty();
@@ -139,6 +135,18 @@ $(document).ready(function () {
       });
   }
 
+
+
+// ------------------------------------------forecast
+
+
+
+
+
+
+
+
+
 // // --------------------------------footer
 //   $(document).ready(function () {
 //     const footer = $("<footer>");
@@ -161,6 +169,29 @@ $(document).ready(function () {
 
 
 
+// ------------------aside
+
+
+// aside section----------------------
+cityNames.forEach((city) => {
+  const cityButton = createCityButton(city);
+
+  console
+  $("#history").append(cityButton);
+
+
+
+
+
+// ---------------------------------aside
+
+
+
+
+
+
+
+
 });
 
 
@@ -169,21 +200,6 @@ $(document).ready(function () {
 
 
 
-// ------------------aside
-
-
-// aside section----------------------
-// cityNames.forEach((city) => {
-//   const cityButton = createCityButton(city);
-
-//   console
-//   $("#history").append(cityButton);
-
-
-
-
-
-// ---------------------------------aside
 
 
 
