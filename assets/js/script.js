@@ -24,9 +24,20 @@ $(document).ready(function () {
         return response.json();
       })
       .then(function (data) {
-        console.log(data.city.name);
+        // console.log(data.list[0].weather[0].icon);//icon???
+       // console.log(data.list[0].weather[0].main);//clouds
+      // console.log(data.list[0].main.temp);
+     // console.log(data.list[0].main.humidity);
+     //console.log(data.list[0].wind.speed);
+    // console.log(data.list[0].dt_txt);//date an hours
+    //console.log(data.city.name);
+
       });
   }
+
+
+
+  
   //add class asideArea and mainArea
   $(".col-lg-3").addClass("asideArea");
   $(".col-lg-9").addClass("mainArea");
