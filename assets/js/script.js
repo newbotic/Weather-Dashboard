@@ -12,26 +12,106 @@ $(document).ready(function () {
 
   // ---------------------------
 
-//   var cardDiv = $("<div>");
-//   cardDiv.addClass("card-area"); //use addClass
-//   // cardDiv.text('Hello');
-//   $("#forecast").append(cardDiv);
+  //   var cardDiv = $("<div>");
+  //   cardDiv.addClass("card-area"); //use addClass
+  //   // cardDiv.text('Hello');
+  //   $("#forecast").append(cardDiv);
 
   function getDataFromApi(cityName) {
-      fetch("https://api.openweathermap.org/data/2.5/forecast?q=" + cityName +"&appid=e7c4d3c5bf68207d8632346a6c99878f&units=metric")
-    // fetch(queryURL + cityName + "&appid=" + apiKey)
+    fetch(
+      "https://api.openweathermap.org/data/2.5/forecast?q=" +
+        cityName +
+        "&appid=e7c4d3c5bf68207d8632346a6c99878f&units=metric"
+    )
+      // fetch(queryURL + cityName + "&appid=" + apiKey)
       .then(function (response) {
         return response.json();
       })
       .then(function (data) {
         // console.log(data.list[0].weather[0].icon);//icon???
-       // console.log(data.list[0].weather[0].main);//clouds
-      // console.log(data.list[0].main.temp);
-     // console.log(data.list[0].main.humidity);
-     //console.log(data.list[0].wind.speed);
-    // console.log(data.list[0].dt_txt);//date an hours
-    //console.log(data.city.name);
+        // console.log(data.list[0].weather[0].main);//clouds
+        // console.log(data.list[0].main.temp);
+        // console.log(data.list[0].main.humidity);
+        //console.log(data.list[0].wind.speed);
+        // console.log(data.list[0].dt_txt);//date an hours
+        //console.log(data.city.name);
 
+        // console.log(data);
+        const weatherIcon = $(".weather-icon");
+      
+  
+
+  //Logic for weather icons
+  const list = data.list;
+// console.log(list);
+  for (let i = 0; i < list.length; i++) {
+    const iconCode = list[i].weather[0].icon;
+    const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+  
+
+  switch (iconCode) {
+    case "01d":
+      weatherIcon.attr("src", iconUrl);
+      break;
+    case "02d":
+      weatherIcon.attr("src", iconUrl);
+      break;
+    case "03d":
+      weatherIcon.attr("src", iconUrl);
+      break;
+    case "04d":
+      weatherIcon.attr("src", iconUrl);
+      break;
+    case "09d":
+      weatherIcon.attr("src", iconUrl);
+    case "10d":
+      weatherIcon.attr("src", iconUrl);
+      break;
+    case "11d":
+      weatherIcon.attr("src", iconUrl);
+      break;
+    case "13d":
+      weatherIcon.attr("src", iconUrl);
+      break;
+    case "50d":
+      weatherIcon.attr("src", iconUrl);
+      break;
+    case "01n":
+      weatherIcon.attr("src", iconUrl);
+      break;
+    case "02n":
+      weatherIcon.attr("src", iconUrl);
+      break;
+    case "03n":
+      weatherIcon.attr("src", iconUrl);
+    case "04n":
+      weatherIcon.attr("src", iconUrl);
+      break;
+    case "09n":
+      weatherIcon.attr("src", iconUrl);
+      break;
+    case "10n":
+      weatherIcon.attr("src", iconUrl);
+      break;
+    case "11n":
+      weatherIcon.attr("src", iconUrl);
+      break;
+      case "13n":
+      weatherIcon.attr("src", iconUrl);
+      break;
+    case "50n":
+      weatherIcon.attr("src", iconUrl);
+      break;
+    default:
+      weatherIcon.attr("src", "");
+  }
+
+  }
+
+      })
+
+      .catch(function (error) {
+        console.error("Error fetching weather data:", error);
       });
   }
 
