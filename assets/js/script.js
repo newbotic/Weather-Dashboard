@@ -10,6 +10,10 @@ $(document).ready(function () {
   });
 
 
+
+
+
+
   function getDataFromApi(cityName) {
 
     $("#forecast").empty();
@@ -24,24 +28,15 @@ $(document).ready(function () {
       })
       .then(function (data) {
      
-        // console.log(data.list[0].weather[0].icon);//icon
-        // console.log(data.list[0].weather[0].main);//clouds
-        // console.log(data.list[0].main.temp);
-        // console.log(data.list[0].main.humidity);
-        //console.log(data.list[0].wind.speed);
-        // console.log(data.list[0].dt_txt);//date an hours
-        //console.log(data.city.name);
-        // console.log(data);
         
         const weatherIcon = $(".weather-icon");
-        // const todaySection = $("#today");
        
         //Logic for weather icons
+
         const list = data.list;
         for (let i = 0; i < list.length; i++) {
           const iconCode = list[i].weather[0].icon;
           const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-          //   console.log(iconCode);
 
           switch (iconCode) {
             case "01d":
@@ -100,13 +95,42 @@ $(document).ready(function () {
               weatherIcon.attr("src", "");
           }
         
+          
+          
+          // -----------------------------today
+          
+          const todaySection = $("#today");
+          
+          todaySection.empty();
+          
+          const city = data.city.name;
+          
+          const todayFirst= $("<div>", { class: "today-first" });
+          const todaySecond = $('<div>', {class:"today-second" });
+          todaySection.append(todayFirst, todaySecond);
+
+          todayFirst.append(`<h1>${city}</h1>`);
+          todayFirst.append(`<p>${list[i].dt_txt}</p>`);
+          todayFirst.append(`<img src="${iconUrl}" alt="Weather Icon">`);
+
+          todaySecond.append(`<p>Temp: ${list[i].main.temp}°C</p>`);
+          todaySecond.append(`<p>Wind: ${list[i].wind.speed} m/s</p>`);
+          todaySecond.append(`<p>Humidity: ${list[i].main.humidity}%</p>`);
+          
+          
+          // ---------------------------today
+
+          
+          
+          
+          // -----------------------------forecast
+          
           const card = $("<div>", { class: "wCard" });
           $("#forecast").append(card);
-
-          card.append(`<p>Date: ${list[i].dt_txt}</p>`);
+          card.append(`<p> ${list[i].dt_txt}</p>`);
           card.append(`<img src="${iconUrl}" alt="Weather Icon">`);
-          card.append(`<p>Temperature: ${list[i].main.temp}°C</p>`);
-          card.append(`<p>Wind Speed: ${list[i].wind.speed} m/s</p>`);
+          card.append(`<p>Temp: ${list[i].main.temp}°C</p>`);
+          card.append(`<p>Wind: ${list[i].wind.speed} m/s</p>`);
           card.append(`<p>Humidity: ${list[i].main.humidity}%</p>`);
         }
       })
@@ -115,31 +139,20 @@ $(document).ready(function () {
       });
   }
 
-
-  // Today section------------------------------------------
-
-
-
-const todaySection = $("#today");
-const city = data.city.name;
-const date = list[0].dt_txt;
-const iconCode = list[0].weather[0].icon;
-const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-const temperature = list[0].main.temp;
-const windSpeed = list[0].wind.speed;
-const humidity = list[0].main.humidity;
-console.log
-
-// Clear existing content in #today section
-todaySection.empty();
-
-// Append dynamically generated content
-todaySection.append(`<h2>${city}</h2>`);
-todaySection.append(`<p>Date: ${date}</p>`);
-todaySection.append(`<img src="${iconUrl}" alt="Weather Icon">`);
-todaySection.append(`<p>Temperature: ${temperature}°C</p>`);
-todaySection.append(`<p>Wind Speed: ${windSpeed} m/s</p>`);
-todaySection.append(`<p>Humidity: ${humidity}%</p>`);
+// // --------------------------------footer
+//   $(document).ready(function () {
+//     const footer = $("<footer>");
+  
+//     footer.addClass("footer");
+  
+//     const copyrightText = "&copy; 2023 Newbotic. All rights reserved.";
+//     const copyright = $("<p>").html(copyrightText);
+  
+//     footer.append(copyright);
+  
+//     $("body").append(footer);
+//   });
+//   // footer--------------------------create 
 
 
 
@@ -148,7 +161,32 @@ todaySection.append(`<p>Humidity: ${humidity}%</p>`);
 
 
 
- });
+});
+
+
+
+
+
+
+
+// ------------------aside
+
+
+// aside section----------------------
+// cityNames.forEach((city) => {
+//   const cityButton = createCityButton(city);
+
+//   console
+//   $("#history").append(cityButton);
+
+
+
+
+
+// ---------------------------------aside
+
+
+
 
 
 
