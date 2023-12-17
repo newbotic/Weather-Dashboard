@@ -1,47 +1,43 @@
 $(document).ready(function () {
   const apiKey = "e7c4d3c5bf68207d8632346a6c99878f";
-  const queryURL = "api.openweathermap.org/data/2.5/forecast?q="; //{city name}&appid={API key}
+  const queryURL = "api.openweathermap.org/data/2.5/forecast?q="; 
 
   $("#search-form").on("submit", function (event) {
     event.preventDefault();
-    // console.log(event.target);
     const cityName = $("#search-input").val().trim();
 
     getDataFromApi(cityName);
   });
 
-  // ---------------------------
-
-  //   var cardDiv = $("<div>");
-  //   cardDiv.addClass("card-area"); //use addClass
-  //   // cardDiv.text('Hello');
-  //   $("#forecast").append(cardDiv);
 
   function getDataFromApi(cityName) {
+
+    $("#forecast").empty();
+
     fetch(
       "https://api.openweathermap.org/data/2.5/forecast?q=" +
         cityName +
         "&appid=e7c4d3c5bf68207d8632346a6c99878f&units=metric"
     )
-      // fetch(queryURL + cityName + "&appid=" + apiKey)
       .then(function (response) {
         return response.json();
       })
       .then(function (data) {
-        // console.log(data.list[0].weather[0].icon);//icon???
+     
+        // console.log(data.list[0].weather[0].icon);//icon
         // console.log(data.list[0].weather[0].main);//clouds
         // console.log(data.list[0].main.temp);
         // console.log(data.list[0].main.humidity);
         //console.log(data.list[0].wind.speed);
         // console.log(data.list[0].dt_txt);//date an hours
         //console.log(data.city.name);
-
         // console.log(data);
+        
         const weatherIcon = $(".weather-icon");
-
+        // const todaySection = $("#today");
+       
         //Logic for weather icons
         const list = data.list;
-        // console.log(list);
         for (let i = 0; i < list.length; i++) {
           const iconCode = list[i].weather[0].icon;
           const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
@@ -119,33 +115,44 @@ $(document).ready(function () {
       });
   }
 
-  // Add class 'asideArea' and 'mainArea'
-//   $(".col-lg-3").addClass("asideArea");
-//   $(".col-lg-9").addClass("mainArea");
-// });
 
-//       .catch(function (error) {
-//         console.error("Error fetching weather data:", error);
-//       });
-//   }
+  // Today section------------------------------------------
 
-//   //add class asideArea and mainArea
-//   $(".col-lg-3").addClass("asideArea");
-//   $(".col-lg-9").addClass("mainArea");
 
-//   //   Function to create weatherCard
-//   function createWeatherCard(date, weatherIcon, temperature, wind, humidity) {
-//     const card = $("<div>", { class: "wCard", text: "Tis is a card" });
-//     // $(".card-area").append(card);
-//     $("#forecast").append(card); ///???????? try
-//     card.append(`<p>Date: ${date}</p>`);
-//     card.append(`<img src="${weatherIcon}" alt="Weather Icon">`);
-//     card.append(`<p>Temperature: ${temp}°C</p>`);
-//     card.append(`<p>Wind Speed: ${speed} m/s</p>`);
-//     card.append(`<p>Humidity: ${humidity}%</p>`);
 
-//     return card;
-//   }
-//   createWeatherCard();
-//   console.log(createWeatherCard);
+const todaySection = $("#today");
+const city = data.city.name;
+const date = list[0].dt_txt;
+const iconCode = list[0].weather[0].icon;
+const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+const temperature = list[0].main.temp;
+const windSpeed = list[0].wind.speed;
+const humidity = list[0].main.humidity;
+console.log
+
+// Clear existing content in #today section
+todaySection.empty();
+
+// Append dynamically generated content
+todaySection.append(`<h2>${city}</h2>`);
+todaySection.append(`<p>Date: ${date}</p>`);
+todaySection.append(`<img src="${iconUrl}" alt="Weather Icon">`);
+todaySection.append(`<p>Temperature: ${temperature}°C</p>`);
+todaySection.append(`<p>Wind Speed: ${windSpeed} m/s</p>`);
+todaySection.append(`<p>Humidity: ${humidity}%</p>`);
+
+
+
+
+
+
+
+
  });
+
+
+
+
+
+
+
