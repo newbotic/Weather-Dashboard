@@ -11,6 +11,8 @@ $(document).ready(function () {
 
   let city;
 // let list;
+
+// Function getDataFromApi  start
   function getDataFromApi(cityName) {
     $("#forecast").empty();
 
@@ -24,14 +26,19 @@ $(document).ready(function () {
       })
       .then(function (data) {
         renderData(data)
-        saveDataLocal(city, data);
+        saveDataLocal(city, data);//--------------------------
 
-        createBtn(city);
+        createBtn(city);//---------------------------
       })
       .catch(function (error) {
         console.error("Error fetching weather data:", error);
       });
   }
+
+// Function getDataFromApi  end
+
+  // Function render data start
+
 function renderData(data){
   const weatherIcon = $(".weather-icon");
 
@@ -136,14 +143,31 @@ function renderData(data){
   }
 
 }
+// Function render data end
 
-//-----------------save list to local storage
+
+
+
+//  Function save list to local storage start
 
 function saveDataLocal(city, data) {
   localStorage.setItem(`${city}-data`, JSON.stringify(data));
 }
 
+//  Function save list to local storage end
+
+
+
+
   // ------------------------------------------forecast
+
+  // function writeForecastTitle(){
+  //   var divForecastTitle = $('<div>');
+  //   var forecastTitle = $('<h2>').text('5-Days Forecast');
+  //   divForecastTitle.append(forecastTitle);
+  //   $('#forecast').prepend(divForecastTitle);
+  // }
+  // writeForecastTitle();
 
   // -------------------------historyButtons
 
@@ -151,38 +175,44 @@ function saveDataLocal(city, data) {
 
  //add conditional logic to render btn
     var historyBtn = $("<button>");
-
     historyBtn.attr("id", "btn-" + city.toLowerCase());
     historyBtn.addClass("historyBtn");
     // console.log(city);
     historyBtn.append(`${city}`);
     $("#history").prepend(historyBtn);
   }
-function renderBtns(){
-  // First we get all the items in local storage and get the keys. Then filter the list by removing any that do not contain "-data"
-  var history = Object.keys(localStorage).filter(itemInStorage => itemInStorage.includes("-data"))
-  console.log(history)
-  history.forEach(city => createBtn(city.replace("-data","")))
-}
-renderBtns()
-// $('.historyBtn').on('click', function(event){
-//   event.preventDefault();
 
 
-$("#history").on("click", ".historyBtn", function(event) {
-  event.preventDefault();
-
-
+  
+  
+  
+  
+  $("#history").on("click", ".historyBtn", function(event) {
+    event.preventDefault();
+    var city = $(this).text();
+    getDataFromApi(city) 
+  });
+  
+  function renderBtns(){
+    // First we get all the items in local storage and get the keys. Then filter the list by removing any that do not contain "-data"
+    var history = Object.keys(localStorage).filter(itemInStorage => itemInStorage.includes("-data"))
+    // console.log(history)
+    history.forEach(city => createBtn(city.replace("-data","")))
+  }
+  
+  renderBtns()
+// ????????????????????no data for Paris
 
   // var clickedBtnId = $(this).attr("id");
   // console.log("Button  ID:", clickedBtnId);
 
-  var city = $(this).attr("id").replace("btn-", "");
+
+  // var city = $(this).attr("id").replace("btn-", "");
   
   // var cityData = getDataFromLocal(`${city}-data`);
 
-  var cityData = getDataFromLocal(city);
-  console.log("Data for", city, ":", cityData);
+  // var cityData = getDataFromLocal(city);
+  // console.log("Data for", city, ":", cityData);
 
 
 })
@@ -190,6 +220,7 @@ $("#history").on("click", ".historyBtn", function(event) {
 // -----------------retrieve data from local storage
 
   
+// --function getDataFromLocal--  end
 
 function getDataFromLocal(city) {
   console.log(Object.keys(localStorage))
@@ -214,18 +245,32 @@ function getDataFromLocal(city) {
 }
 getDataFromLocal();
 
-// --------------????????
-  
-
-// event listener
-$('.list-group').on('click', function() {
-  console.log('clicked!');
+// ---function getDataFromLocal--  end
   
 
 
+// event listener delegated
+
+function buttonCliked(){
+
+  $('.list-group').on('click', function() {
+    console.log('clicked!');
+  
+})
+
+}
+buttonCliked();
 
 
-    });
+// function clearLocalStorage() {
+//   // Clear the local storage
+//   localStorage.clear();
+  
+//   alert('Local storage has been cleared.');
+// }
+// clearLocalStorage()
+
+    // });
   // });
   
   
@@ -255,4 +300,4 @@ $('.list-group').on('click', function() {
   //     $("body").append(footer);
   //   });
   //   // footer--------------------------create
-});
+// });
