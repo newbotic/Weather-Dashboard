@@ -156,7 +156,7 @@ function createBtn(city){
 
   console.log(city);
   historyBtn.append(`${city}`);
-  $('#history').append(historyBtn);
+  $('#history').prepend(historyBtn);
   }
 
 
