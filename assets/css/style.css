@@ -190,6 +190,19 @@ body {
   margin-top: 20px;
 }
 
+#history button{
+  background-color: #5b548a;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  width: 100%;  
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+}
 
-
-
+/* not working */
+#history button:hoover{
+  background-color: #8a855b;
+}
