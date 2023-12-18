@@ -10,7 +10,7 @@ $(document).ready(function () {
   });
 
   let city;
-
+let list;
   function getDataFromApi(cityName) {
     $("#forecast").empty();
 
@@ -127,7 +127,6 @@ $(document).ready(function () {
 
         saveDataLocal(city, data);
 
-
         createBtn(city);
       })
       .catch(function (error) {
@@ -150,6 +149,8 @@ function saveDataLocal(city, data) {
   function createBtn(city) {
     var historyBtn = $("<button>");
 
+    historyBtn.attr("id", "btn-" + city.toLowerCase());
+
     // console.log(city);
     historyBtn.append(`${city}`);
     $("#history").prepend(historyBtn);
@@ -158,62 +159,50 @@ function saveDataLocal(city, data) {
 $('historyBtn').on('click', function(event){
   event.preventDefault();
 
+
+  var clickedBtnId = $(this).attr("id");
+  console.log("Button  ID:", clickedBtnId);
+
 })
 
 // ---------------------------------retreive data from local storage
 
-  // Retrieve data from local storage
-  // Persist events between refreshes of a page
-  const localStorageData = JSON.parse(localStorage.getItem('data.list')) ||[];
-  // console.log(localStorageData);
+  
 
-
-  const todayDataIndex = localStorageData.findIndex(function (element) {
-    return element.date === today;
-  });
-
-  if (todayDataIndex >= 0) {
-    const todayData = localStorageData[todayDataIndex];
-
-    // Populate data from local storage to textarea
-    for (let i = 9; i < 18; i++) {
-      $(`#textarea-${i}`).val(todayData.data[i]);
+function getDataFromLocal() {
+  try {
+    const savedData = localStorage.getItem(`${city}-data`);
+    if (savedData) {
+      const parseSavedData = JSON.parse(savedData);
+      console.log(parseSavedData);
+      return parseSavedData;
+    } else {
+      console.log('No data f', city);
+      return null;
     }
+  } catch (error) {
+    console.error('Error :', error);
+    return null;
   }
+}
+getDataFromLocal(`${city}`);
+
+// --------------????????
+  
+
+// event listener
+$('.list-group').on('click', function() {
+  console.log('clicked!');
+  
 
 
-    // Save data to local storage
-    $(".saveBtn").on("click", function () {
-      var hour = $(this).data("hour");
-      var textareaId = `textarea-${hour}`;
-      var textValue = $("#" + textareaId)
-        .val()
-        .trim();
+
+
   
-      if (textValue === "") {
-        // Do nothing if textarea value is empty
-        return;
-      }
-  
-      if (todayDataIndex >= 0) {
-        // Update existing entry
-        const todayData = localStorageData[todayDataIndex];
-        todayData.data[hour] = textValue;
-      } else {
-        // Create a new entry for today
-        const todayData = {
-          date: today,
-          data: {
-            [hour]: textValue,
-          },
-        };
-        localStorageData.push(todayData);
-      }
-  
-      // Save data back to local storage
-      localStorage.setItem("data", JSON.stringify(localStorageData));
+
+
     });
-  });
+  // });
   
   
 
@@ -227,7 +216,6 @@ $('historyBtn').on('click', function(event){
 
 
 
-  // -----------------------------end historyButtons
 
   // // --------------------------------footer
   //   $(document).ready(function () {
@@ -243,4 +231,4 @@ $('historyBtn').on('click', function(event){
   //     $("body").append(footer);
   //   });
   //   // footer--------------------------create
-// });
+});
