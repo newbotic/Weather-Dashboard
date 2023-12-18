@@ -10,6 +10,8 @@ $(document).ready(function () {
   });
 
 
+  let city;
+
   function getDataFromApi(cityName) {
 
     $("#forecast").empty();
@@ -99,7 +101,9 @@ $(document).ready(function () {
           
           todaySection.empty();
           
-          const city = data.city.name;
+          // const city = data.city.name;
+
+          city =data.city.name;
           
           const todayFirst= $("<div>", { class: "today-first" });
           const todaySecond = $('<div>', {class:"today-second" });
@@ -116,18 +120,7 @@ $(document).ready(function () {
           
           // ---------------------------today
 
-          function createBtn(){
-
           
-          var a = $('<button>');
-          // a.addClass('historyBtn');
-          // a.attr('data-name',`${city}`);
-          // a.text(city);
-          a.append(`${city}`);
-          $('#history').append(a);
-          }
-          
-          createBtn();
           
           
           
@@ -141,6 +134,9 @@ $(document).ready(function () {
           card.append(`<p>Wind: ${list[i].wind.speed} m/s</p>`);
           card.append(`<p>Humidity: ${list[i].main.humidity}%</p>`);
         }
+
+        createBtn(city);
+
       })
       .catch(function (error) {
         console.error("Error fetching weather data:", error);
@@ -151,6 +147,24 @@ $(document).ready(function () {
 
 // ------------------------------------------forecast
 
+// -------------------------historyButtons
+
+function createBtn(city){
+
+          
+  var historyBtn = $('<button>');
+
+  console.log(city);
+  historyBtn.append(`${city}`);
+  $('#history').append(historyBtn);
+  }
+
+
+
+
+
+
+  // -----------------------------end historyButtons
 
 
 
@@ -181,15 +195,6 @@ $(document).ready(function () {
 
 
 
-// ------------------aside
-
-
-// aside section----------------------
-
-
-
-
-// ---------------------------------aside
 
 
 
