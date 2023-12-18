@@ -1,6 +1,6 @@
 $(document).ready(function () {
   const apiKey = "e7c4d3c5bf68207d8632346a6c99878f";
-  const queryURL = "api.openweathermap.org/data/2.5/forecast?q="; 
+  const queryURL = "api.openweathermap.org/data/2.5/forecast?q=";
 
   $("#search-form").on("submit", function (event) {
     event.preventDefault();
@@ -9,11 +9,9 @@ $(document).ready(function () {
     getDataFromApi(cityName);
   });
 
-
   let city;
 
   function getDataFromApi(cityName) {
-
     $("#forecast").empty();
 
     fetch(
@@ -25,13 +23,12 @@ $(document).ready(function () {
         return response.json();
       })
       .then(function (data) {
-     
-        
         const weatherIcon = $(".weather-icon");
-       
+
         //Logic for weather icons
 
         const list = data.list;
+
         for (let i = 0; i < list.length; i++) {
           const iconCode = list[i].weather[0].icon;
           const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
@@ -92,21 +89,19 @@ $(document).ready(function () {
             default:
               weatherIcon.attr("src", "");
           }
-        
-          
-          
-          // -----------------------------today
-          
-          const todaySection = $("#today");
-          
-          todaySection.empty();
-          
-          // const city = data.city.name;
 
-          city =data.city.name;
-          
-          const todayFirst= $("<div>", { class: "today-first" });
-          const todaySecond = $('<div>', {class:"today-second" });
+          // -----------------------------today
+
+          const todaySection = $("#today");
+
+          todaySection.empty();
+
+          // const city = data.city.name;?????
+
+          city = data.city.name;
+
+          const todayFirst = $("<div>", { class: "today-first" });
+          const todaySecond = $("<div>", { class: "today-second" });
           todaySection.append(todayFirst, todaySecond);
 
           todayFirst.append(`<h1>${city}</h1>`);
@@ -116,16 +111,11 @@ $(document).ready(function () {
           todaySecond.append(`<p>Temp: ${list[i].main.temp}°C</p>`);
           todaySecond.append(`<p>Wind: ${list[i].wind.speed} m/s</p>`);
           todaySecond.append(`<p>Humidity: ${list[i].main.humidity}%</p>`);
-          
-          
+
           // ---------------------------today
 
-          
-          
-          
-          
           // -----------------------------forecast
-          
+
           const card = $("<div>", { class: "wCard" });
           $("#forecast").append(card);
           card.append(`<p> ${list[i].dt_txt}</p>`);
@@ -135,8 +125,10 @@ $(document).ready(function () {
           card.append(`<p>Humidity: ${list[i].main.humidity}%</p>`);
         }
 
-        createBtn(city);
+        saveDataLocal(city, data);
 
+
+        createBtn(city);
       })
       .catch(function (error) {
         console.error("Error fetching weather data:", error);
@@ -145,19 +137,90 @@ $(document).ready(function () {
 
 
 
-// ------------------------------------------forecast
+//-----------------save list to local storage
 
-// -------------------------historyButtons
+function saveDataLocal(city, data) {
+  localStorage.setItem(`${city}-data`, JSON.stringify(data));
+}
 
-function createBtn(city){
+  // ------------------------------------------forecast
 
-          
-  var historyBtn = $('<button>');
+  // -------------------------historyButtons
 
-  console.log(city);
-  historyBtn.append(`${city}`);
-  $('#history').prepend(historyBtn);
+  function createBtn(city) {
+    var historyBtn = $("<button>");
+
+    // console.log(city);
+    historyBtn.append(`${city}`);
+    $("#history").prepend(historyBtn);
   }
+
+$('historyBtn').on('click', function(event){
+  event.preventDefault();
+
+})
+
+// ---------------------------------retreive data from local storage
+
+  // Retrieve data from local storage
+  // Persist events between refreshes of a page
+  const localStorageData = JSON.parse(localStorage.getItem('data.list')) ||[];
+  // console.log(localStorageData);
+
+
+  const todayDataIndex = localStorageData.findIndex(function (element) {
+    return element.date === today;
+  });
+
+  if (todayDataIndex >= 0) {
+    const todayData = localStorageData[todayDataIndex];
+
+    // Populate data from local storage to textarea
+    for (let i = 9; i < 18; i++) {
+      $(`#textarea-${i}`).val(todayData.data[i]);
+    }
+  }
+
+
+    // Save data to local storage
+    $(".saveBtn").on("click", function () {
+      var hour = $(this).data("hour");
+      var textareaId = `textarea-${hour}`;
+      var textValue = $("#" + textareaId)
+        .val()
+        .trim();
+  
+      if (textValue === "") {
+        // Do nothing if textarea value is empty
+        return;
+      }
+  
+      if (todayDataIndex >= 0) {
+        // Update existing entry
+        const todayData = localStorageData[todayDataIndex];
+        todayData.data[hour] = textValue;
+      } else {
+        // Create a new entry for today
+        const todayData = {
+          date: today,
+          data: {
+            [hour]: textValue,
+          },
+        };
+        localStorageData.push(todayData);
+      }
+  
+      // Save data back to local storage
+      localStorage.setItem("data", JSON.stringify(localStorageData));
+    });
+  });
+  
+  
+
+
+
+
+
 
 
 
@@ -166,58 +229,18 @@ function createBtn(city){
 
   // -----------------------------end historyButtons
 
+  // // --------------------------------footer
+  //   $(document).ready(function () {
+  //     const footer = $("<footer>");
 
+  //     footer.addClass("footer");
 
+  //     const copyrightText = "&copy; 2023 Newbotic. All rights reserved.";
+  //     const copyright = $("<p>").html(copyrightText);
 
+  //     footer.append(copyright);
 
-
-
-
-// // --------------------------------footer
-//   $(document).ready(function () {
-//     const footer = $("<footer>");
-  
-//     footer.addClass("footer");
-  
-//     const copyrightText = "&copy; 2023 Newbotic. All rights reserved.";
-//     const copyright = $("<p>").html(copyrightText);
-  
-//     footer.append(copyright);
-  
-//     $("body").append(footer);
-//   });
-//   // footer--------------------------create 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  //     $("body").append(footer);
+  //   });
+  //   // footer--------------------------create
+// });
