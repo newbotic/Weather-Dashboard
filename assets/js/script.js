@@ -116,6 +116,18 @@ $(document).ready(function () {
           
           // ---------------------------today
 
+          function createBtn(){
+
+          
+          var a = $('<button>');
+          // a.addClass('historyBtn');
+          // a.attr('data-name',`${city}`);
+          // a.text(city);
+          a.append(`${city}`);
+          $('#history').append(a);
+          }
+          
+          createBtn();
           
           
           
@@ -173,12 +185,6 @@ $(document).ready(function () {
 
 
 // aside section----------------------
-cityNames.forEach((city) => {
-  const cityButton = createCityButton(city);
-
-  console
-  $("#history").append(cityButton);
-
 
 
 
