@@ -5,7 +5,7 @@
   box-sizing: border-box;
 }
 body {
-  background: #8a855b;
+  background: #bd926e;
 }
 
 .weather-header {
@@ -50,7 +50,6 @@ body {
     max-width: 70%;
   }
 }
-
 #today {
   width: 100%;
   border: 1px solid #5b548a;
@@ -100,9 +99,13 @@ body {
   padding: 20px;
   margin-left: 30px;
 }
-.today-second {
+
+@media (max-width: 575px) {
+.today-second >p {
   display: flex;
   flex-direction: column;
+  font-size: 12px;
+}
 }
 
 .footer {
@@ -137,7 +140,7 @@ body {
 }
 
 .search-button {
-  background-color: #5b548a;
+  background: linear-gradient(135deg, #00feba, #5b548a);
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -160,7 +163,8 @@ body {
 }
 
 .search-button:hover {
-  background-color: #8a855b;
+  background:#5b548a;
+  
 }
 
 @media (min-width: 992px) {
@@ -191,7 +195,7 @@ body {
 }
 
 #history button{
-  background-color: #5b548a;
+  background: linear-gradient(135deg, #00feba, #5b548a);
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -206,7 +210,8 @@ body {
 
 
 #history button:hover{
-  background-color: #8a855b;
+  background: #5b548a;
+  
 }
 
 #titleForecast{
@@ -216,4 +221,9 @@ margin: 10px;
 font-size: 40px;
 padding: 20px;
 
+}
+@media (min-width: 576px) and (max-width: 754px) {
+  .today-second > p {
+    font-size: 14px; 
+  }
 }
