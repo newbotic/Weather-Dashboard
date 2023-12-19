@@ -13,6 +13,7 @@ $(document).ready(function () {
 // let list;
 
 // Function getDataFromApi  start
+
   function getDataFromApi(cityName) {
     $("#forecast").empty();
 
@@ -181,26 +182,58 @@ function saveDataLocal(city, data) {
     historyBtn.append(`${city}`);
     $("#history").prepend(historyBtn);
   }
+// ------------------------------------------
+
+  
+function historyButtonListener() {
+    $("#history").on("click", ".historyBtn", function (event) {
+        event.preventDefault();
+        var city = $(this).text();
+        // renderData(data);
+        getDataFromApi(city);
+    });
+}
+
+// Call the function during initialization
+historyButtonListener();
 
 
   
+  // -------------------------------------
   
+  // $("#history").on("click", ".historyBtn", function(event) {
+  //   event.preventDefault();
+  //   var city = $(this).text();
+  //   getDataFromApi(city) 
+  // });
+  // --------------------
+  // function renderBtns(){
+  //   // First we get all the items in local storage and get the keys. Then filter the list by removing any that do not contain "-data"
+  //   var history = Object.keys(localStorage).filter(itemInStorage => itemInStorage.includes("-data"))
+  //   // console.log(history)
+  //   history.forEach(city => createBtn(city.replace("-data","")))
+  // }
   
-  
-  $("#history").on("click", ".historyBtn", function(event) {
-    event.preventDefault();
-    var city = $(this).text();
-    getDataFromApi(city) 
-  });
-  
-  function renderBtns(){
-    // First we get all the items in local storage and get the keys. Then filter the list by removing any that do not contain "-data"
-    var history = Object.keys(localStorage).filter(itemInStorage => itemInStorage.includes("-data"))
-    // console.log(history)
-    history.forEach(city => createBtn(city.replace("-data","")))
+  // renderBtns()
+// -------------------------------
+
+// ...
+
+    function renderBtns() {
+      var history = Object.keys(localStorage).filter(itemInStorage => itemInStorage.includes("-data"));
+      if (history.length > 0) {
+          var lastCity = history[history.length - 1].replace("-data", "");
+          createBtn(lastCity);
+          getDataFromApi(lastCity);
+      }
   }
-  
-  renderBtns()
+
+  renderBtns();
+// });
+
+
+
+
 // ????????????????????no data for Paris
 
   // var clickedBtnId = $(this).attr("id");
@@ -222,7 +255,7 @@ function saveDataLocal(city, data) {
   
 // --function getDataFromLocal--  end
 
-function getDataFromLocal(city) {
+function getDataFromLocalStorage(city) {
   console.log(Object.keys(localStorage))
   if(!city) {
     var history = Object.keys(localStorage).filter(itemInStorage => itemInStorage.includes("-data"))
@@ -233,9 +266,9 @@ function getDataFromLocal(city) {
     if (savedData) {
       const parseSavedData = JSON.parse(savedData);
       console.log(parseSavedData);
-      renderData(parseSavedData);
+      // renderData(parseSavedData);
     } else {
-      console.log('No data ', city);
+      // console.log('No data ', city);
       return null;
     }
   } catch (error) {
@@ -243,7 +276,7 @@ function getDataFromLocal(city) {
     return null;
   }
 }
-getDataFromLocal();
+getDataFromLocalStorage();
 
 // ---function getDataFromLocal--  end
   
@@ -251,15 +284,15 @@ getDataFromLocal();
 
 // event listener delegated
 
-function buttonCliked(){
+// function buttonCliked(){
 
-  $('.list-group').on('click', function() {
-    console.log('clicked!');
+//   $('.list-group').on('click', function() {
+//     console.log('clicked!');
   
-})
+// })
 
-}
-buttonCliked();
+// }
+// buttonCliked();
 
 
 // function clearLocalStorage() {
@@ -278,13 +311,14 @@ buttonCliked();
 
 
 
+  var newDiv = $("<div>").attr("id", "titleForecast");
+
+  $("#today").after(newDiv);
 
 
 
 
-
-
-
+newDiv.text('5-Days Forecast');
 
   // // --------------------------------footer
   //   $(document).ready(function () {

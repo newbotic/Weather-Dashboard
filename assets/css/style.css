@@ -196,13 +196,24 @@ body {
   border: none;
   padding: 10px 20px;
   cursor: pointer;
-  width: 100%;  
   margin-left: 20px;
   margin-right: 20px;
   margin-top: 10px;
+   width: calc(100% - 40px); 
+  }
+
+
+
+
+#history button:hover{
+  background-color: #8a855b;
 }
 
-/* not working */
-#history button:hoover{
-  background-color: #8a855b;
+#titleForecast{
+width: 100%;
+height: 10vh;
+margin: 10px;
+font-size: 40px;
+padding: 20px;
+
 }
