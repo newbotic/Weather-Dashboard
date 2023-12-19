@@ -197,15 +197,27 @@ getDataFromLocal();
 
 // event listener delegated
 
-function buttonCliked(){
+// function buttonCliked(){
 
-  $('.list-group').on('click', function() {
-    console.log('clicked!');
+//   $('.list-group').on('click', function() {
+//     console.log('clicked!');
   
-})
+// })
+
+// }
+// buttonCliked();
+
+
+function titleDiv(){
+
+  var newDiv = $("<div>").attr("id", "titleForecast");
+  
+  $("#today").after(newDiv);
+  newDiv.text('5-Days Forecast');
 
 }
-buttonCliked();
+titleDiv();
+
 
 
 // function clearLocalStorage() {
