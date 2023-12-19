@@ -13,7 +13,6 @@ $(document).ready(function () {
 // let list;
 
 // Function getDataFromApi  start
-
   function getDataFromApi(cityName) {
     $("#forecast").empty();
 
@@ -50,63 +49,9 @@ function renderData(data){
   for (let i = 0; i < list.length; i++) {
     const iconCode = list[i].weather[0].icon;
     const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+    $(".weather-icon").attr("src", iconUrl);
 
-    switch (iconCode) {
-      case "01d":
-        weatherIcon.attr("src", iconUrl);
-        break;
-      case "02d":
-        weatherIcon.attr("src", iconUrl);
-        break;
-      case "03d":
-        weatherIcon.attr("src", iconUrl);
-        break;
-      case "04d":
-        weatherIcon.attr("src", iconUrl);
-        break;
-      case "09d":
-        weatherIcon.attr("src", iconUrl);
-      case "10d":
-        weatherIcon.attr("src", iconUrl);
-        break;
-      case "11d":
-        weatherIcon.attr("src", iconUrl);
-        break;
-      case "13d":
-        weatherIcon.attr("src", iconUrl);
-        break;
-      case "50d":
-        weatherIcon.attr("src", iconUrl);
-        break;
-      case "01n":
-        weatherIcon.attr("src", iconUrl);
-        break;
-      case "02n":
-        weatherIcon.attr("src", iconUrl);
-        break;
-      case "03n":
-        weatherIcon.attr("src", iconUrl);
-      case "04n":
-        weatherIcon.attr("src", iconUrl);
-        break;
-      case "09n":
-        weatherIcon.attr("src", iconUrl);
-        break;
-      case "10n":
-        weatherIcon.attr("src", iconUrl);
-        break;
-      case "11n":
-        weatherIcon.attr("src", iconUrl);
-        break;
-      case "13n":
-        weatherIcon.attr("src", iconUrl);
-        break;
-      case "50n":
-        weatherIcon.attr("src", iconUrl);
-        break;
-      default:
-        weatherIcon.attr("src", "");
-    }
+
 
     // -----------------------------today
 
@@ -182,58 +127,26 @@ function saveDataLocal(city, data) {
     historyBtn.append(`${city}`);
     $("#history").prepend(historyBtn);
   }
-// ------------------------------------------
-
-  
-function historyButtonListener() {
-    $("#history").on("click", ".historyBtn", function (event) {
-        event.preventDefault();
-        var city = $(this).text();
-        // renderData(data);
-        getDataFromApi(city);
-    });
-}
-
-// Call the function during initialization
-historyButtonListener();
 
 
   
-  // -------------------------------------
   
-  // $("#history").on("click", ".historyBtn", function(event) {
-  //   event.preventDefault();
-  //   var city = $(this).text();
-  //   getDataFromApi(city) 
-  // });
-  // --------------------
-  // function renderBtns(){
-  //   // First we get all the items in local storage and get the keys. Then filter the list by removing any that do not contain "-data"
-  //   var history = Object.keys(localStorage).filter(itemInStorage => itemInStorage.includes("-data"))
-  //   // console.log(history)
-  //   history.forEach(city => createBtn(city.replace("-data","")))
-  // }
   
-  // renderBtns()
-// -------------------------------
-
-// ...
-
-    function renderBtns() {
-      var history = Object.keys(localStorage).filter(itemInStorage => itemInStorage.includes("-data"));
-      if (history.length > 0) {
-          var lastCity = history[history.length - 1].replace("-data", "");
-          createBtn(lastCity);
-          getDataFromApi(lastCity);
-      }
+  
+  $("#history").on("click", ".historyBtn", function(event) {
+    event.preventDefault();
+    var city = $(this).text();
+    getDataFromApi(city) 
+  });
+  
+  function renderBtns(){
+    // First we get all the items in local storage and get the keys. Then filter the list by removing any that do not contain "-data"
+    var history = Object.keys(localStorage).filter(itemInStorage => itemInStorage.includes("-data"))
+    // console.log(history)
+    history.forEach(city => createBtn(city.replace("-data","")))
   }
-
-  renderBtns();
-// });
-
-
-
-
+  
+  renderBtns()
 // ????????????????????no data for Paris
 
   // var clickedBtnId = $(this).attr("id");
@@ -255,7 +168,7 @@ historyButtonListener();
   
 // --function getDataFromLocal--  end
 
-function getDataFromLocalStorage(city) {
+function getDataFromLocal(city) {
   console.log(Object.keys(localStorage))
   if(!city) {
     var history = Object.keys(localStorage).filter(itemInStorage => itemInStorage.includes("-data"))
@@ -266,9 +179,9 @@ function getDataFromLocalStorage(city) {
     if (savedData) {
       const parseSavedData = JSON.parse(savedData);
       console.log(parseSavedData);
-      // renderData(parseSavedData);
+      renderData(parseSavedData);
     } else {
-      // console.log('No data ', city);
+      console.log('No data ', city);
       return null;
     }
   } catch (error) {
@@ -276,7 +189,7 @@ function getDataFromLocalStorage(city) {
     return null;
   }
 }
-getDataFromLocalStorage();
+getDataFromLocal();
 
 // ---function getDataFromLocal--  end
   
@@ -284,15 +197,15 @@ getDataFromLocalStorage();
 
 // event listener delegated
 
-// function buttonCliked(){
+function buttonCliked(){
 
-//   $('.list-group').on('click', function() {
-//     console.log('clicked!');
+  $('.list-group').on('click', function() {
+    console.log('clicked!');
   
-// })
+})
 
-// }
-// buttonCliked();
+}
+buttonCliked();
 
 
 // function clearLocalStorage() {
@@ -311,27 +224,13 @@ getDataFromLocalStorage();
 
 
 
-  var newDiv = $("<div>").attr("id", "titleForecast");
-
-  $("#today").after(newDiv);
 
 
 
 
-newDiv.text('5-Days Forecast');
 
-  // // --------------------------------footer
-  //   $(document).ready(function () {
-  //     const footer = $("<footer>");
 
-  //     footer.addClass("footer");
 
-  //     const copyrightText = "&copy; 2023 Newbotic. All rights reserved.";
-  //     const copyright = $("<p>").html(copyrightText);
 
-  //     footer.append(copyright);
 
-  //     $("body").append(footer);
-  //   });
-  //   // footer--------------------------create
-// });
+    
