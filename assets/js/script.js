@@ -88,8 +88,8 @@ $(document).ready(function () {
   //  Save data to local storage 
 
   function saveDataLocal(city, data) {
-    localStorage.setItem(`${city}-data`, JSON.stringify(data));
-    // localStorage.setItem(`${city}`, JSON.stringify(data));
+    // localStorage.setItem(`${city}-data`, JSON.stringify(data));
+    localStorage.setItem(`${city}`, JSON.stringify(data));
 
   }
 
@@ -110,16 +110,20 @@ $(document).ready(function () {
   $("#history").on("click", ".historyBtn", function (event) {
     event.preventDefault();
     var city = $(this).text();
-    getDataFromApi(city);
+    // getDataFromApi(city); ????? changed
+    getDataFromLocal(city); 
+
   });
   };
 
+historyListener();
+
   function renderBtns() {
-    // First we get all the items in local storage and get the keys. Then filter the list by removing any that do not contain "-data"
+    // First we get all the items in local storage and get the keys. 
+    //Then filter the list by removing any that do not contain "-data"
     var history = Object.keys(localStorage).filter((itemInStorage) =>
       itemInStorage.includes("-data")
     );
-    // console.log(history)
     history.forEach((city) => createBtn(city.replace("-data", "")));
   }
 
@@ -130,7 +134,7 @@ $(document).ready(function () {
 // --function getDataFromLocal--  end
 
 function getDataFromLocal(city) {
-  console.log(Object.keys(localStorage));
+  // console.log(Object.keys(localStorage));
   if (!city) {
     var history = Object.keys(localStorage).filter((itemInStorage) =>
       itemInStorage.includes("-data")
@@ -141,7 +145,7 @@ function getDataFromLocal(city) {
     const savedData = localStorage.getItem(city);
     if (savedData) {
       const parseSavedData = JSON.parse(savedData);
-      console.log(parseSavedData);
+      // console.log(parseSavedData);
       renderData(parseSavedData);
     } else {
       console.log("No data ", city);
