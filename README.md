@@ -39,7 +39,7 @@ Server API: Fetch real-time weather data from a reliable weather API.
 
 ## Screenshot
 
-![Screenshot](./assets/images/10-server-side-apis-challenge-demo.png)
+![Screenshot](./assets/images/weather.png)
 
 ## Link to deployed app
 
