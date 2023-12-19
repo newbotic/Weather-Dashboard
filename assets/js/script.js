@@ -1,20 +1,26 @@
 $(document).ready(function () {
+  //OpenWeather API key and URL
+
   const apiKey = "e7c4d3c5bf68207d8632346a6c99878f";
   const queryURL = "api.openweathermap.org/data/2.5/forecast?q=";
+
+  //Event listener for form
 
   $("#search-form").on("submit", function (event) {
     event.preventDefault();
     const cityName = $("#search-input").val().trim();
 
+    // call getDataFromApi function
+
     getDataFromApi(cityName);
   });
 
-  let city;
-// let list;
+  let city; //var to store current city
 
-// Function getDataFromApi  start
+  // Function getDataFromApi
+
   function getDataFromApi(cityName) {
-    $("#forecast").empty();
+    $("#forecast").empty(); //Clear previous data
 
     fetch(
       "https://api.openweathermap.org/data/2.5/forecast?q=" +
@@ -25,154 +31,111 @@ $(document).ready(function () {
         return response.json();
       })
       .then(function (data) {
-        renderData(data)
-        saveDataLocal(city, data);//--------------------------
-
-        createBtn(city);//---------------------------
+        renderData(data); //Render data
+        saveDataLocal(city, data); //Save to local storage
+        createBtn(city); //Create a history button
       })
       .catch(function (error) {
-        console.error("Error fetching weather data:", error);
+        console.error("Error data:", error);
       });
   }
 
-// Function getDataFromApi  end
+  // Function render data on the page
 
-  // Function render data start
+  function renderData(data) {
+    const weatherIcon = $(".weather-icon");
+    const list = data.list;
+    for (let i = 0; i < list.length; i++) {
+      const iconCode = list[i].weather[0].icon;
+      const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+      $(".weather-icon").attr("src", iconUrl);
 
-function renderData(data){
-  const weatherIcon = $(".weather-icon");
+      // Render today's data
 
-  //Logic for weather icons
+      function renderToday() {
+        const todaySection = $("#today");
+        todaySection.empty();
+        city = data.city.name;
+        const todayFirst = $("<div>", { class: "today-first" });
+        const todaySecond = $("<div>", { class: "today-second" });
+        todaySection.append(todayFirst, todaySecond);
 
-  const list = data.list;
+        todayFirst.append(`<h1>${city}</h1>`);
+        todayFirst.append(`<p>${list[i].dt_txt}</p>`);
+        todayFirst.append(`<img src="${iconUrl}" alt="Weather Icon">`);
 
-  for (let i = 0; i < list.length; i++) {
-    const iconCode = list[i].weather[0].icon;
-    const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-    $(".weather-icon").attr("src", iconUrl);
+        todaySecond.append(`<p>Temp: ${list[i].main.temp}°C</p>`);
+        todaySecond.append(`<p>Wind: ${list[i].wind.speed} m/s</p>`);
+        todaySecond.append(`<p>Humidity: ${list[i].main.humidity}%</p>`);
+      }
+      renderToday();
 
+      // Render forecast
 
-
-    // -----------------------------today
-
-    const todaySection = $("#today");
-
-    todaySection.empty();
-
-    // const city = data.city.name;?????
-
-    city = data.city.name;
-
-    const todayFirst = $("<div>", { class: "today-first" });
-    const todaySecond = $("<div>", { class: "today-second" });
-    todaySection.append(todayFirst, todaySecond);
-
-    todayFirst.append(`<h1>${city}</h1>`);
-    todayFirst.append(`<p>${list[i].dt_txt}</p>`);
-    todayFirst.append(`<img src="${iconUrl}" alt="Weather Icon">`);
-
-    todaySecond.append(`<p>Temp: ${list[i].main.temp}°C</p>`);
-    todaySecond.append(`<p>Wind: ${list[i].wind.speed} m/s</p>`);
-    todaySecond.append(`<p>Humidity: ${list[i].main.humidity}%</p>`);
-
-    // ---------------------------today
-
-    // -----------------------------forecast
-
-    const card = $("<div>", { class: "wCard" });
-    $("#forecast").append(card);
-    card.append(`<p> ${list[i].dt_txt}</p>`);
-    card.append(`<img src="${iconUrl}" alt="Weather Icon">`);
-    card.append(`<p>Temp: ${list[i].main.temp}°C</p>`);
-    card.append(`<p>Wind: ${list[i].wind.speed} m/s</p>`);
-    card.append(`<p>Humidity: ${list[i].main.humidity}%</p>`);
+      function renderForecast() {
+        const card = $("<div>", { class: "wCard" });
+        $("#forecast").append(card);
+        card.append(`<p> ${list[i].dt_txt}</p>`);
+        card.append(`<img src="${iconUrl}" alt="Weather Icon">`);
+        card.append(`<p>Temp: ${list[i].main.temp}°C</p>`);
+        card.append(`<p>Wind: ${list[i].wind.speed} m/s</p>`);
+        card.append(`<p>Humidity: ${list[i].main.humidity}%</p>`);
+      }
+      renderForecast();
+    }
   }
 
-}
-// Function render data end
+  //  Save data to local storage 
 
+  function saveDataLocal(city, data) {
+    localStorage.setItem(`${city}-data`, JSON.stringify(data));
+    // localStorage.setItem(`${city}`, JSON.stringify(data));
 
+  }
 
-
-//  Function save list to local storage start
-
-function saveDataLocal(city, data) {
-  localStorage.setItem(`${city}-data`, JSON.stringify(data));
-}
-
-//  Function save list to local storage end
-
-
-
-
-  // ------------------------------------------forecast
-
-  // function writeForecastTitle(){
-  //   var divForecastTitle = $('<div>');
-  //   var forecastTitle = $('<h2>').text('5-Days Forecast');
-  //   divForecastTitle.append(forecastTitle);
-  //   $('#forecast').prepend(divForecastTitle);
-  // }
-  // writeForecastTitle();
-
-  // -------------------------historyButtons
+// Create history buttons
 
   function createBtn(city) {
-
- //add conditional logic to render btn
+    //add conditional logic to render btn
     var historyBtn = $("<button>");
     historyBtn.attr("id", "btn-" + city.toLowerCase());
     historyBtn.addClass("historyBtn");
-    // console.log(city);
     historyBtn.append(`${city}`);
     $("#history").prepend(historyBtn);
   }
 
-
+  function historyListener(){
+    
   
-  
-  
-  
-  $("#history").on("click", ".historyBtn", function(event) {
+  $("#history").on("click", ".historyBtn", function (event) {
     event.preventDefault();
     var city = $(this).text();
-    getDataFromApi(city) 
+    getDataFromApi(city);
   });
-  
-  function renderBtns(){
+  };
+
+  function renderBtns() {
     // First we get all the items in local storage and get the keys. Then filter the list by removing any that do not contain "-data"
-    var history = Object.keys(localStorage).filter(itemInStorage => itemInStorage.includes("-data"))
+    var history = Object.keys(localStorage).filter((itemInStorage) =>
+      itemInStorage.includes("-data")
+    );
     // console.log(history)
-    history.forEach(city => createBtn(city.replace("-data","")))
+    history.forEach((city) => createBtn(city.replace("-data", "")));
   }
-  
-  renderBtns()
-// ????????????????????no data for Paris
 
-  // var clickedBtnId = $(this).attr("id");
-  // console.log("Button  ID:", clickedBtnId);
+  renderBtns();
 
 
-  // var city = $(this).attr("id").replace("btn-", "");
-  
-  // var cityData = getDataFromLocal(`${city}-data`);
 
-  // var cityData = getDataFromLocal(city);
-  // console.log("Data for", city, ":", cityData);
-
-
-})
-
-// -----------------retrieve data from local storage
-
-  
 // --function getDataFromLocal--  end
 
 function getDataFromLocal(city) {
-  console.log(Object.keys(localStorage))
-  if(!city) {
-    var history = Object.keys(localStorage).filter(itemInStorage => itemInStorage.includes("-data"))
-    city = history[history.length - 1]
+  console.log(Object.keys(localStorage));
+  if (!city) {
+    var history = Object.keys(localStorage).filter((itemInStorage) =>
+      itemInStorage.includes("-data")
+    );
+    city = history[history.length - 1];
   }
   try {
     const savedData = localStorage.getItem(city);
@@ -181,68 +144,25 @@ function getDataFromLocal(city) {
       console.log(parseSavedData);
       renderData(parseSavedData);
     } else {
-      console.log('No data ', city);
+      console.log("No data ", city);
       return null;
     }
   } catch (error) {
-    console.error('Error :', error);
+    // console.error('Error :', error);
     return null;
   }
 }
 getDataFromLocal();
 
-// ---function getDataFromLocal--  end
-  
 
-
-// event listener delegated
-
-// function buttonCliked(){
-
-//   $('.list-group').on('click', function() {
-//     console.log('clicked!');
-  
-// })
-
-// }
-// buttonCliked();
-
-
-function titleDiv(){
-
+function titleDiv() {
   var newDiv = $("<div>").attr("id", "titleForecast");
-  
-  $("#today").after(newDiv);
-  newDiv.text('5-Days Forecast');
 
+  $("#today").after(newDiv);
+  newDiv.text("5-Days Forecast");
 }
 titleDiv();
 
 
+});
 
-// function clearLocalStorage() {
-//   // Clear the local storage
-//   localStorage.clear();
-  
-//   alert('Local storage has been cleared.');
-// }
-// clearLocalStorage()
-
-    // });
-  // });
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
